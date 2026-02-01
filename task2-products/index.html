@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Products</title>
+  <style>
+    body {
+      font-family: Arial;
+    }
+
+    .controls {
+      margin-bottom: 15px;
+    }
+
+    #list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .product {
+      border: 1px solid #ccc;
+      padding: 10px;
+      width: 200px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="controls">
+  <select id="category" onchange="update()">
+    <option value="all">All</option>
+    <option value="Electronics">Electronics</option>
+    <option value="Clothing">Clothing</option>
+    <option value="Books">Books</option>
+    <option value="Sports">Sports</option>
+  </select>
+
+  <select id="sort" onchange="update()">
+    <option value="">Sort</option>
+    <option value="priceAsc">Price ↑</option>
+    <option value="priceDesc">Price ↓</option>
+    <option value="nameAsc">Name A-Z</option>
+    <option value="nameDesc">Name Z-A</option>
+    <option value="ratingAsc">Rating ↑</option>
+    <option value="ratingDesc">Rating ↓</option>
+  </select>
+</div>
+
+<div id="list"></div>
+
+<script>
+  const products = [
+    {name:"Phone", price:500, rating:4, category:"Electronics"},
+    {name:"Laptop", price:900, rating:5, category:"Electronics"},
+    {name:"Headphones", price:100, rating:3, category:"Electronics"},
+    {name:"Tablet", price:300, rating:4, category:"Electronics"},
+    {name:"Speaker", price:80, rating:4, category:"Electronics"},
+    {name:"Watch", price:150, rating:5, category:"Electronics"},
+
+    {name:"T-Shirt", price:20, rating:4, category:"Clothing"},
+    {name:"Jeans", price:40, rating:5, category:"Clothing"},
+    {name:"Jacket", price:60, rating:4, category:"Clothing"},
+    {name:"Shoes", price:50, rating:5, category:"Clothing"},
+    {name:"Cap", price:10, rating:3, category:"Clothing"},
+
+    {name:"Book A", price:10, rating:3, category:"Books"},
+    {name:"Book B", price:15, rating:5, category:"Books"},
+    {name:"Book C", price:12, rating:4, category:"Books"},
+    {name:"Notebook", price:5, rating:4, category:"Books"},
+    {name:"Novel", price:18, rating:5, category:"Books"},
+
+    {name:"Football", price:25, rating:4, category:"Sports"},
+    {name:"Bat", price:30, rating:5, category:"Sports"},
+    {name:"Gloves", price:15, rating:3, category:"Sports"},
+    {name:"Ball", price:20, rating:4, category:"Sports"}
+  ];
+
+  function update() {
+    let items = [...products];
+    let cat = category.value;
+    let sort = document.getElementById("sort").value;
+
+    if (cat !== "all")
+      items = items.filter(p => p.category === cat);
+
+    if (sort === "priceAsc") items.sort((a,b)=>a.price-b.price);
+    if (sort === "priceDesc") items.sort((a,b)=>b.price-a.price);
+    if (sort === "nameAsc") items.sort((a,b)=>a.name.localeCompare(b.name));
+    if (sort === "nameDesc") items.sort((a,b)=>b.name.localeCompare(a.name));
+    if (sort === "ratingAsc") items.sort((a,b)=>a.rating-b.rating);
+    if (sort === "ratingDesc") items.sort((a,b)=>b.rating-a.rating);
+
+    list.innerHTML = items.map(p =>
+      `<div class="product">
+        <b>${p.name}</b><br>
+        Price: $${p.price}<br>
+        Rating: ${p.rating}<br>
+        Category: ${p.category}
+      </div>`
+    ).join("");
+  }
+
+  update();
+</script>
+
+</body>
+</html>
